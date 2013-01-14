@@ -1,8 +1,8 @@
 #Welcome to PL/Java#
-This is the PL/Java Wiki. It contains installation instructions, documentation, some technical background, and community information. If you have comments or ideas regarding this wiki, please convey them on the [[Community and Members | community]].
+This is the PL/Java Wiki. It contains installation instructions, documentation, some technical background, and community information. If you have comments or ideas regarding this wiki, please convey them on the [Community](http://pgfoundry.org/mail/?group_id=1000038).
 
 ##Overview##
-PL/Java is a free add-on module that brings Java™ Stored Procedures, Triggers, and Functions to the [http://www.postgresql.org/ PostgreSQL™] backend. The development started late 2003 and the first release of PL/Java arrived in January 2005. The project is released under the [[PLJava License|Berkley/BSD]] license.
+PL/Java is a free add-on module that brings Java™ Stored Procedures, Triggers, and Functions to the [PostgreSQL™](http://www.postgresql.org/) backend. The development started late 2003 and the first release of PL/Java arrived in January 2005. The project is released under the [[PLJava License|Berkley/BSD]] license.
 
 ##Features##
 * Ability to write both functions and triggers using Java 1.4 or higher.
@@ -22,10 +22,10 @@ PL/Java is a free add-on module that brings Java™ Stored Procedures, Triggers,
 [[Migration Guide]]
 
 ##Resources##
-[[Download Page]]  
-[[Community and Members]]  
-[[CVS]]  
-[[Bug Tracking]]
+[Downloads](http://pgfoundry.org/frs/?group_id=1000038)  
+[Community](http://pgfoundry.org/mail/?group_id=1000038)    
+[Git](/tada/pljava)  
+[Bug Tracking](/tada/pljava/issues)
 
 ##Technology##
 [[Technoloy in Brief]]  
