@@ -3,7 +3,8 @@ The method signature of a trigger is predefined. A trigger method must always re
 
 The ResultSets are only available for triggers that are fired ON EACH ROW. Delete triggers have no new row, and insert triggers have no old row. Only update triggers have both.
 In addition to the sets, several boolean methods exists to gain more information about the trigger.
-<pre>CREATE TABLE mdt (
+```sql
+CREATE TABLE mdt (
   id int4,
   idesc text,
   moddate timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL);
@@ -17,8 +18,11 @@ CREATE TRIGGER mdt_moddatetime
   BEFORE UPDATE ON mdt
   FOR EACH ROW
   EXECUTE PROCEDURE moddatetime (moddate);
-</pre>And here is the corresponding Java code:
-Methods in the <tt>org.postgresql.pljava.example.Triggers</tt> class <pre>/**
+```
+And here is the corresponding Java code:
+Methods in the <tt>org.postgresql.pljava.example.Triggers</tt> class
+```java
+/**
  * Update a modification time when the row is updated.
  */
 static void moddatetime(TriggerData td)
@@ -39,4 +43,5 @@ throws SQLException
     throw new TriggerException(td, "one argument was expected");
 
   _new.updateTimestamp(args[0], new Timestamp(System.currentTimeMillis()));
-}</pre>
+}
+```
