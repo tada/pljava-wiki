@@ -62,11 +62,16 @@ A domain type will be mapped in accorance with the type that it extends unless y
 </table>
 
 ##NULL handling of primitives##
-The scalar types that map to Java primitives can not be passed as null values. To enable this, those types can have an alternative mapping. You enable this mapping by explicitly denoting it in the method reference.<pre>CREATE FUNCTION trueIfEvenOrNull(integer)
+The scalar types that map to Java primitives can not be passed as null values. To enable this, those types can have an alternative mapping. You enable this mapping by explicitly denoting it in the method reference.
+```sql
+CREATE FUNCTION trueIfEvenOrNull(integer)
   RETURNS bool
   AS 'foo.fee.Fum.trueIfEvenOrNull(java.lang.Integer)'
   LANGUAGE java;
-</pre>In java, you would have something like:<pre>package foo.fee;
+```
+In java, you would have something like:
+```java
+package foo.fee;
 
 public class Fum
 {
@@ -76,24 +81,33 @@ public class Fum
       ? true
       : (value.intValue() % 1) == 0;
   }
-}</pre>The following two statements should both yield true<pre>
+}
+```
+The following two statements should both yield true:
+```sql
 SELECT trueIfEvenOrNull(NULL);
-SELECT trueIfEvenOrNull(4);</pre>In order to return null values from a Java method, you simply use the object type that corresponds to the primitive (i.e. you return java.lang.Integer instead of int). The PL/Java resolver mechanism will find the method regardless. Since Java cannot have different return types for methods with the same name, this does not introduce any ambiguities.
+SELECT trueIfEvenOrNull(4);
+```
+In order to return null values from a Java method, you simply use the object type that corresponds to the primitive (i.e. you return java.lang.Integer instead of int). The PL/Java resolver mechanism will find the method regardless. Since Java cannot have different return types for methods with the same name, this does not introduce any ambiguities.
 
 Starting with PostgreSQL version 8.2 it will be possible to have NULL values in arrays. PL/Java will handle that the same way as with normal primitives, i.e. you can declare methods that use a java.lang.Integer[] parameter instead of an int[] parameter.
 
 ##Composite types##
 A composite type will be passed as a read-only java.sql.ResultSet with exaclty one row by default. The ResultSet will be positioned on its row so no call to next() should be made. The values of the composite type are retrieved using the standard getter methods of the ResultSet.
-Example<pre>CREATE TYPE compositeTest
+Example:
+```sql
+CREATE TYPE compositeTest
   AS(base integer, incbase integer, ctime timestamptz);
 
 CREATE FUNCTION useCompositeTest(compositeTest)
   RETURNS VARCHAR
   AS 'foo.fee.Fum.useCompositeTest'
   IMMUTABLE LANGUAGE java;
-</pre>
+```
 In class Fum we add the static following static method
-The foo.fee.Fum.useCompositeTest method<pre>public static String useCompositeTest(ResultSet compositeTest)
+The foo.fee.Fum.useCompositeTest method:
+```java
+public static String useCompositeTest(ResultSet compositeTest)
 throws SQLException
 {
   int base = compositeTest.getInt(1);
@@ -103,7 +117,7 @@ throws SQLException
     "\\", incbase = \\"" + incbase +
     "\\", ctime = \\"" + ctime + "\\"";
 }
-</pre>
+```
 
 ##Default mapping##
 Types that have no mapping are currently mapped to java.lang.String. The standard PostgreSQL textin/textout routines registered for respective type will be used when the values are converted.
