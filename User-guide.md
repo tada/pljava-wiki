@@ -4,6 +4,7 @@
 
 ##Authoring##
 * [[Writing Java functions, triggers, and types]]
+* Using a [[SQL deployment descriptor]]
 * [[Security]]
 * [[Module Configuration]]
 
