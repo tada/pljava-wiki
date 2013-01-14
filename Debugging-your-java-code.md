@@ -1,33 +1,36 @@
-==Debugging with dbx==
-
+##Debugging with dbx##
 Copied from [Debugging PL/Java Applications with Solaris Studio dbx](http://my.opera.com/myrkraverk/blog/2010/12/11/debugging-pl-java-with-dbx), Johann 'Myrkraverk's blog on my.opera.
 
 ###Setting up the Server###
-
 Debugging PL/Java code requires debugging of the server process itself. This means the debugger must be run as the same (or more privileged) user id as the server itself. That may not be possible in a production environment for access control/security reasons so for the remainder of this text we assume the developer is running his<sup>1</sup> own server (under his own uid) for debugging.
 
 As per the dbx manual, the Java virtual machine must be started with the options -Xdebug -Xnoagent and -Xrundbx_agent. This can be done by having the following line in postgresql.conf.
  pljava.vmoptions = ' -Xdebug -Xnoagent -Xrundbx_agent'
 This means the jvm will load libdbx_agent.so whose location must be in the server's runtime load path (LD_LIBRARY_PATH). The Solaris Studio 12.2 manual gives the wrong pathname for the Solaris amd64 binary. It is found under <install dir>/solstudio12.2/lib/dbx/amd64/runtime and can be specified as
- LD_LIBRARY_PATH_64=/opt/myrkraverk/solstudio12.2/lib/dbx/amd64/runtime
+```properties
+LD_LIBRARY_PATH_64=/opt/myrkraverk/solstudio12.2/lib/dbx/amd64/runtime
+```
 in the server's environment<sup>2</sup> where Studio is installed in /opt/myrkraverk.
 
 ###Setting up the debugger (dbx)###
-
 PL/Java loads classes from the database which dbx does not know about so it must be told where the jar files can be found. This is done with the CLASSPATHX environment variable. Note the appended X. In our case it is
+```properties
  CLASSPATHX=/home/johann/src/Java/PLJava/Hello.jar
+```
 which must be set in the debugger's environment. In addition it must also be told where to find the Java source files. For this we use
+```properties
  JAVASRCPATH=/home/johann/src/Java/PLJava
+```
 as well.
 
 To debug PL/Java itself we need its source path in JAVASRCPATH too.
 
 ###Attaching dbx to the Server's Process###
-
-Before we attach to the server we need to make sure that PL/Java has been loaded and that the virtual machine has been created. Otherwise dbx does not know anything about Java. An example.<pre>
+Before we attach to the server we need to make sure that PL/Java has been loaded and that the virtual machine has been created. Otherwise dbx does not know anything about Java. An example.
+```properties
  (dbx) stop in com.myrkraverk.Hello.hello
  dbx: "com" is not defined as a function or procedure in the scope `postgres`be-secure.c`secure_read`
-</pre>
+```
 The best way is to run some simple Java function before we attach the debugger. In a psql session one way is to run the following commands.
 ```sql
  CREATE FUNCTION getsysprop(VARCHAR)
@@ -36,15 +39,16 @@ The best way is to run some simple Java function before we attach the debugger. 
    LANGUAGE java;
  SELECT getsysprop('user.home');
 ```
-Now it is just a matter of getting the server's pid<pre>
+Now it is just a matter of getting the server's pid
+```psql
  johann=# select pg_backend_pid();
   pg_backend_pid 
  ----------------
            10767
  (1 row)
-</pre>
+```
 and attach dbx.
-<pre>
+```sh
  $ dbx - 10767
  Reading postgres
  Reading ld.so.1
@@ -58,10 +62,9 @@ and attach dbx.
  Current function is secure_read
    303   		n = recv(port->sock, ptr, len, 0);
  (dbx)
-</pre>
+```
 
 ###Debugging our Java Code###
-
 Our "hello world" is very simple.
 ```java
  package com.myrkraverk;
@@ -74,41 +77,48 @@ Our "hello world" is very simple.
      }
  }
 ```
-Assuming we have already compiled (with -g) and jar archived our code<sup>3</sup> we can tell dbx to stop in our method whether we have run _sqlj.install_jar()_ first or not.<pre>
+Assuming we have already compiled (with -g) and jar archived our code<sup>3</sup> we can tell dbx to stop in our method whether we have run _sqlj.install_jar()_ first or not.
+```dbx
  (dbx) stop in com.myrkraverk.Hello.hello
  (2) java stop in com.myrkraverk.Hello.hello()
-</pre>
+```
 And if not, we just detach dbx, re-compile/re-archive and place it where dbx can find it before we attach again.
 
-And of course we have to let the server continue running.<pre>
+And of course we have to let the server continue running.
+```dbx
  (dbx) cont
-</pre>
-In our psql session, we can now<sup>4</sup> load our class into the database,<pre>
+```
+In our psql session, we can now<sup>4</sup> load our class into the database,
+```psql
  johann=# select sqlj.install_jar('file:///home/johann/src/Java/PLJava/Hello.jar','Hello',false);
   install_jar 
  -------------
   
  (1 row)
-</pre>
-set the classpath<pre>
+```
+set the classpath
+```psql
  johann=# select sqlj.set_classpath( 'johann', 'Hello' );
   set_classpath 
  ---------------
   
  (1 row)
-</pre>
-and create the sql function.<pre>
+```
+and create the sql function.
+```psql
  johann=# create function hello() returns int4
    as 'com.myrkraverk.Hello.hello' language java;
  CREATE FUNCTION
-</pre>
-Now when we run it,<pre>
+```
+Now when we run it,
+```psql
  johann=# select hello();
-</pre>
-dbx halts at the breakpoint.<pre>
+```
+dbx halts at the breakpoint.
+```dbx
  stopped in com.myrkraverk.Hello.hello at line 14 in file "Hello.java"
     14   	return 17;
-</pre>
+```
 
 ###Final Notes###
 
@@ -137,14 +147,16 @@ SET pljava.vmoptions TO '-agentlib:jdwp=transport=dt_socket,server=y,address=844
 SELECT javatest.testSavepointSanity();
 ```
 Now your application hangs. In the server log you should find a message similar to:
-<pre>Listening for transport dt_socket at address: 8444</pre>
+```sh
+Listening for transport dt_socket at address: 8444
+```
 Use another command window and attach your remote debugger:<br/>
 ```sh
 /home/testbench> jdb -connect com.sun.jdi.SocketAttach:port=8444 -sourcepath /home/workspaces/org.postgresql.pljava/src/java/examples
 Set uncaught java.lang.Throwable
 Set deferred uncaught java.lang.Throwable
 Initializing jdb ...
->
+&gt;
 VM Started: No frames on the current call stack
 
 main[1]
