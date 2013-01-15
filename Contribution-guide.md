@@ -18,6 +18,10 @@ _git checkout master && git pull && git checkout -b bug/master/my_contribution_
 * Make sure your commit messages are in the proper format.
 * If your commit fixes an issue, close it with your commit message (by appending, e.g., fixes #1234, to the summary).
 
+## Submitting Changes
+* Push your changes to a topic branch in your fork of the repository.
+* Submit a pull request to the tada/pljava repository.
+
 ## Commit Message Format
 What should be included in a commit message?
 The three basic things to include are:
