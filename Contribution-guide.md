@@ -15,13 +15,14 @@ Generally, the type is bug, or feature, but you can use something else if they d
 _git checkout master && git pull && git checkout -b bug/master/my_contribution_
 * Don't work directly on the _master_ branch, or any other core branch. Your pull request will be rejected unless it is on a topic branch.
 * Keep your commits distinct. A commit should do one thing, and only one thing.
-* Make sure your commit messages are in the proper format.
+* Make sure your commit messages are in [the proper format](#wiki-commit-message-format).
 * If your commit fixes an issue, close it with your commit message (by appending, e.g., fixes #1234, to the summary).
 
 ## Submitting Changes
 * Push your changes to a topic branch in your fork of the repository.
 * Submit a pull request to the tada/pljava repository.
 
+<a id="commit-message-format"></a>
 ## Commit Message Format
 What should be included in a commit message?
 The three basic things to include are:
