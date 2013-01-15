@@ -38,4 +38,4 @@ Closes #1234
 </pre>
 The summary should be kept short, 50 characters or less, and the lines in the detailed message should not exceed 72 characters. These limits are recommended to get the best output possible from the git log command and also to be able to view the commits in a terminal window with 80 character limit.
 
-The tracking or ticket number is optional and should only be included when the commit really closes a bug.
+The issue number is optional and should only be included when the commit really closes an issue. The close will then occur when the pull request is merged.
