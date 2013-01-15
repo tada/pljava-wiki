@@ -5,7 +5,15 @@ A large part of the reason why JNI was chosen in favor of an RPC based, single J
 * Referential integrity enforcement. Using Java, referential integrity can be implemented that goes beyond what can be done using the standard SQL semantics. It may involve checking XML documents, enforcing some meta-driven rule system, or other complex tasks that put high demands on the implementation language.
 * Advanced pattern recognition. Soundex, image comparison, etc.
 * XML support functions. Java comes with a lot of XML support. Parsers etc. are readily available.
-* Support functions for O/R mappers. A variety of support can be implemented depending on design. One example is an O/R mapper that allows methods on persistent objects. A lot can be gained if such methods are pushed down and executed within the database. Consider the following (OQL):<pre>SELECT AVG(x.salary - x.computeTax()) FROM Employee x WHERE x.salary &gt; 120000;</pre>Pushing the computeTax logic down to the database instead of computing it in the middle tier (where much or the O/R logic resides) is a huge gain from a performance standpoint. The statement could be transformed into SQL as:<pre>SELECT AVG(x.salary - computeTax(x.salary)) FROM Employee x WHERE x.salary &gt; 120000;</pre>As a result, very few interactions (typically only one) need to be made between the middle and the backend tier.
+* Support functions for O/R mappers. A variety of support can be implemented depending on design. One example is an O/R mapper that allows methods on persistent objects. A lot can be gained if such methods are pushed down and executed within the database. Consider the following (OQL):
+```sql
+SELECT AVG(x.salary - x.computeTax()) FROM Employee x WHERE x.salary > 120000;
+```
+Pushing the computeTax logic down to the database instead of computing it in the middle tier (where much or the O/R logic resides) is a huge gain from a performance standpoint. The statement could be transformed into SQL as:
+```sql
+SELECT AVG(x.salary - computeTax(x.salary)) FROM Employee x WHERE x.salary > 120000;
+```
+As a result, very few interactions (typically only one) need to be made between the middle and the backend tier.
 * Views and indexes making use of computed values. In the above example and index could be created on computeTax(x.salary) and a view could express that as net_income.
 * Message queue management. Delivering or fetching things using message queues or other delivery mechanisms. As with most interactions with other processes, this requires transaction coordination of some kind.
 
