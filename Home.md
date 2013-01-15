@@ -1,3 +1,4 @@
+![PL/Java](https://raw.github.com/tada/pljava/gh-pages/images/pljava_logo.jpg)
 #Welcome to PL/Java#
 If you have comments or ideas regarding this wiki, please convey them on the [Mailing List](http://lists.pgfoundry.org/mailman/listinfo/pljava-dev).
 
