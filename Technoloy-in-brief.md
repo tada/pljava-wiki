@@ -6,4 +6,4 @@ A JDBC driver is included in PL/Java. This driver is written directly on top of 
 
 PL/Java is optimized for performance. The Java virtual machine executes within the same process as the backend itself. This vouches for a very low call overhead. PL/Java is designed with the objective to enable the power of Java to the database itself so that database intensive business logic can execute as close to the actual data as possible.
 
-The standard Java Native Interface (JNI) is used when bridging calls from the backend into the Java VM and vice versa. Please read the rationale behind the [[The choice of JNI]] and a more in-depth discussion about some implementation details. PL/Java is primarily targeted to versions > 8.1 but will run with PostgreSQL 8.0 versions too albeit with some limitations.
+The standard Java Native Interface (JNI) is used when bridging calls from the backend into the Java VM and vice versa. Please read the rationale behind the [choice of JNI](The choice of JNI) and a more in-depth discussion about some implementation details. PL/Java is primarily targeted to versions > 8.1 but will run with PostgreSQL 8.0 versions too albeit with some limitations.
