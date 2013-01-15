@@ -20,10 +20,10 @@ _git checkout master && git pull && git checkout -b bug/master/my_contribution_
 
 ## Commit Message Format
 What should be included in a commit message?
-The three basic things to include:
+The three basic things to include are:
 * Summary or title.
 * Detailed description
-* Tracking or ticket number (optional).
+* Issue number (optional).
 
 Here is a sample commit message with all that information:
 <pre>
