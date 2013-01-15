@@ -25,7 +25,7 @@ PL/Java is a free add-on module that brings Java™ Stored Procedures, Triggers,
 [Downloads](http://pgfoundry.org/frs/?group_id=1000038)  
 [Community](http://pgfoundry.org/mail/?group_id=1000038)    
 [Git](/tada/pljava)  
-[Bug Tracking](/tada/pljava/issues)
+[Bug Tracking](/tada/pljava/issues)  
 [Older bug tracker at PgFoundry](http://pgfoundry.org/tracker/?group_id=1000038)
 
 ##Technology##
