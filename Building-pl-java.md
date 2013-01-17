@@ -14,11 +14,11 @@ Which of the following linker options work will depend on your compiler and plat
 
 Define USE_LD_RPATH as _n_ where _n_ is
 
-1. Adds -rpath _path to libjvm.so_ to the linker.
-1. Adds -R_path to libjvm.so_ to the linker.
-1. Adds -R _path to libjvm.so_ to the linker.
-1. Adds -Wl,-R_path to libjvm.so_ to the linker.
-1. Adds -Wl,-R,_path to libjvm.so_ to the linker.
+1. Adds -rpath <i>&lt;path to libjvm.so&gt;</i> to the linker.
+1. Adds -R <i>&lt;path to libjvm.so&gt;</i> to the linker.
+1. Adds -R<i>&lt;path to libjvm.so&gt;</i> to the linker.
+1. Adds -Wl,-R <i>&lt;path to libjvm.so&gt;</i> to the linker.
+1. Adds -Wl,-R,<i>&lt;path to libjvm.so&gt;</i> to the linker.
 
 An example:
  USE_LD_RPATH=1 make
