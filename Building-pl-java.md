@@ -1,4 +1,4 @@
-## Linux Only ==
+## Linux Only ##
 
 ### Environment variables ###
 
@@ -26,10 +26,6 @@ An example:
 * Linux: Options 1, 4, 5 work with GCC.
 * Solaris: Options 2, 3 work with Solaris Studio and 2-5 with GCC.
 
-== Windows ==
+## Windows ##
 
-_Empty._
-
-== OS/2 ==
-
-_Empty._
+_No content provided yet._
