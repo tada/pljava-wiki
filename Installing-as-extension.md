@@ -2,7 +2,7 @@
 
 It is fairly straightforward to deploy PL/Java as an extension.
 
-1. Build PL/Java as discussed in [[Building-pl-java.md]]
+1. Build PL/Java as discussed in [[Building PL/Java]]
 
 2. Copy the shared library to the PostgreSQL lib directory
 
@@ -16,7 +16,7 @@ cp ./pljava-so/target/nar/pljava-so-0.0.2-SNAPSHOT-i386-Linux-gpp-shared/lib/i38
 cp ./pljava/target/pljava-0.0.2-SNAPSHOT.jar /usr/share/postgresql/9.4/extension/pjlava-1.4.4.jar
 ```
 
-Note that shared libraries drop their version number but shared resources do not. I have also changed the version nuymber to reflect the version number of PL/Java (1.4.4) instead of  the one given in the maven pom.xml file.
+Note that shared libraries drop their version number but shared resources do not. I have also changed the version nuymber to reflect the version number of PL/Java (1.4.4) instead of the one given in the maven pom.xml file.
 
 4. Copy and rename the installation script to the extension directory. Note that the filename contains two dashes, not one.
 

@@ -93,7 +93,7 @@ package-targz:
 [INFO] ------------------------------------------------------------------------
 ```
 
-This produces two artifices of interest. The linux shared library is at
+This produces two artifacts of interest. The linux shared library is at
 
 ```{sh}
 ./pljava-so/target/nar/pljava-so-0.0.2-SNAPSHOT-i386-Linux-gpp-shared/lib/i386-Linux-gpp/shared/libpljava-so-0.0.2-SNAPSHOT.so
