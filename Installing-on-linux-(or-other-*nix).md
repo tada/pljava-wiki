@@ -1,4 +1,4 @@
-In order to install PL/Java for use with a standard JVM on a Posix (Linux or other *nix) system, you must first make sure that a Java Runtime Enviromnet (JRE) of version 1.4.2 or later is installed on your machine. A Java Development Kid (JDK) is ok too of course, since it includes a JRE.   As of April 2010, JDK 1.6 is not yet supported for compiling, so ideally, use a late 1.5.0_ release like 1.5.0_21.    Client applications can use any Java, of course.   
+In order to install PL/Java for use with a standard JVM on a Posix (Linux or other *nix) system, you must first make sure that a Java Runtime Environment (JRE) of version 1.4.2 or later is installed on your machine. A Java Development Kit (JDK) is ok too of course, since it includes a JRE.   As of April 2010, JDK 1.6 is not yet supported for compiling, so ideally, use a late 1.5.0_ release like 1.5.0_21.    Client applications can use any Java, of course.
 
 References to JRE_HOME or &lt;jre_home&gt; below means the installation directory of your JRE. In case you have a JDK the JRE_HOME should be equal to $JDK_HOME/jre.
 

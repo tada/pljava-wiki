@@ -1,4 +1,4 @@
-In order to completely uninstall PL/Java you need to have super user privilegies on the database. Here's how you do it.<ol>
+In order to completely uninstall PL/Java you need to have super user privileges on the database. Here's how you do it.<ol>
 <li>See to that no transaction is active that make use of PL/Java functions.</li>
 <li>Edit the <data dir>/postgresql.conf file and remove the entries that are associated with PL/Java. Typically the dynamic_library_path, custom_variable_classes, and any variable that starts with 'pljava.'.</li>
 <li>Issue a pg_ctl reload -D <data dir> on the database to make the backend aware of the changes.</li>

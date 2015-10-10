@@ -48,7 +48,7 @@ Actually, the current implementation does not enforce the declared number of dim
 </table>
 
 ##Domain types##
-A domain type will be mapped in accorance with the type that it extends unless you have installed a specific mapping to override that behavior.
+A domain type will be mapped in accordance with the type that it extends unless you have installed a specific mapping to override that behavior.
 
 ##Pseudo types##
 <table>
@@ -93,7 +93,7 @@ In order to return null values from a Java method, you simply use the object typ
 Starting with PostgreSQL version 8.2 it will be possible to have NULL values in arrays. PL/Java will handle that the same way as with normal primitives, i.e. you can declare methods that use a java.lang.Integer[] parameter instead of an int[] parameter.
 
 ##Composite types##
-A composite type will be passed as a read-only java.sql.ResultSet with exaclty one row by default. The ResultSet will be positioned on its row so no call to next() should be made. The values of the composite type are retrieved using the standard getter methods of the ResultSet.
+A composite type will be passed as a read-only java.sql.ResultSet with exactly one row by default. The ResultSet will be positioned on its row so no call to next() should be made. The values of the composite type are retrieved using the standard getter methods of the ResultSet.
 Example:
 ```sql
 CREATE TYPE compositeTest

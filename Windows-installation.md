@@ -1,5 +1,5 @@
 #Prerequisites#
-In order to install PL/Java on Windows, you must first make sure that a Java Runtime Enviromnet (JRE) of version 1.4.2 or later is installed on your machine. A Java Development Kid (JDK) is ok too of course, since it includes a JRE.
+In order to install PL/Java on Windows, you must first make sure that a Java Runtime Environment (JRE) of version 1.4.2 or later is installed on your machine. A Java Development Kit (JDK) is ok too of course, since it includes a JRE.
 #Using the Windows Installer#
 PL/Java is bundled with the PostgreSQL Windows Installer. It will install PL/Java under your PostgreSQL installation and set up all needed configurations and run the PL/Java deployer.
 #Installing manually.#
