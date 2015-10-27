@@ -322,21 +322,9 @@ Because there are only seven predefined [`java.util.logging.Level`][jlvl]s and
 some of their names are different from PostgreSQL's, PL/Java maps them as
 follows:
 
-PostgreSQL|Java
---------:|-------
-DEBUG5   |
-DEBUG4   |
-DEBUG3   |FINEST
-DEBUG2   |FINER
-DEBUG1   |FINE
-LOG      |
-COMMERROR|
-INFO     |INFO
-NOTICE   |
-WARNING  |WARNING
-ERROR    |SEVERE
-FATAL    |
-PANIC    |
+ | |FINEST|FINER|FINE| | |INFO| |WARNING|SEVERE| | 
+---|---|---|---|---|---|---|---|---|---|---|---|---
+DEBUG5|DEBUG4|DEBUG3|DEBUG2|DEBUG1|LOG|COMMERROR|INFO|NOTICE|WARNING|ERROR|FATAL|PANIC
 
 The Java level `CONFIG` isn't explicitly mapped, and anything that isn't
 explicit will map to the PostgreSQL level `LOG`. For completeness, I've
