@@ -517,7 +517,7 @@ None of those differences stop it from being a valid instance of
 `java.util.logging.LogRecord`, and it can be passed into the logging system
 by calling [`log`][logr] just like any other record. So can other, non-extended
 `LogRecord`s and normal calls on the convenience methods of
-[`Logger'][lgr], all at the same time. Code ported from other environments,
+[`Logger`][lgr], all at the same time. Code ported from other environments,
 knowing nothing of the extensions and using the standard logger API will work
 fine, and can be mixed with code using the extended features.
 
