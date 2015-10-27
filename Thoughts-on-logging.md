@@ -8,8 +8,8 @@ may be more familiar than it is to me. If I seem to describe it in excessive
 detail, please regard that as my effort to have it straight in my own head._
 
 _Also also, to some it may seem strange that I use phrases like "log event"
-without insisting on any essential difference between _thrown exceptions_
-and _calls on loggers_. It's true, I'm not marking any such essential
+without insisting on any essential difference between_ thrown exceptions
+_and_ calls on loggers. _It's true, I'm not marking any such essential
 difference, and I hope, before this is done, that won't seem so strange._
 
 So, here goes.
@@ -17,7 +17,7 @@ So, here goes.
 _... logging isn't particularly magical._  
 —Dave Cramer
 
-_... it's what you do with it._
+_... it's what you do with it._  
 —variously attributed
 
 ## Background
@@ -151,7 +151,7 @@ Internally, it has good provisions for examining individual properties of
 the event (currently not including the schema, table, column, datatype, and
 constraint names that [appeared in 9.3][fnames]). However, these provisions
 aren't quite exposed yet to ordinary developers writing PL/Java code. Although
-[[Exception handling|documented]] in the wiki, they aren't accessible to
+[[documented|Exception handling]] in the wiki, they aren't accessible to
 PL/Java code compiled normally against `pljava-api.jar`; it would have to
 be compiled against the full `pljava.jar` and refer explicitly to
 [`ServerException`][servx] and [`ErrorData`][edata] in the
@@ -172,7 +172,8 @@ PL/Java provides a JDBC interface to the backend, because that is how
 the SQL/JRT standard is written, which PL/Java is meant to implement.
 As far as JDBC is concerned, access to these implementation-specific error
 details would be an extension, such as might be accessed
-by [`unwrap`][] on a standard JDBC object. Being committed to a JDBC interface
+by [`unwrap`][unwrap] on a standard JDBC object. Being committed to a JDBC
+interface
 to PostgreSQL, it would be ideal to agree on the details with the other,
 front-end JDBC interfaces to PostgreSQL, as front-ends also receive finely
 structured PostgreSQL error details that client code may want to examine.
@@ -390,8 +391,7 @@ them, and writes them to the DriverManager's LogWriter. Unlike
 but a separate class [`org.postgresql.util.GT`][gt] (also excluded from the
 public API) does both when used in calls
 to the logger. It gets translations from [`ResourceBundle`][rb]s, the same
-form `java.util.logging` uses, though `GT` has the more `gettext`-like
-behavior where the untranslated key is returned if no translation is found.
+form `java.util.logging` uses.
 
 When logging a `PSQLException` instance that carries a
 `ServerErrorMessage`, the result looks much like a message logged by the
@@ -414,6 +414,7 @@ from, and has a method to retrieve it, but the exception's message is set using
 only the additional `String` passed to its constructor.
 
 [gpl]: http://docs.oracle.com/javase/7/docs/api/index.html?java/sql/Driver.html#getParentLogger()
+[nex]: http://impossibl.github.io/pgjdbc-ng/apidocs/0.6/index.html?com/impossibl/postgres/system/NoticeException.html
 
 ## What would a nice API look like?
 
