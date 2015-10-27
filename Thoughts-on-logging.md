@@ -35,7 +35,7 @@ useful while writing the code. It is a structured record with information
 serving several specific purposes and at several distinct levels of detail:
 
 item            |pq|PL/pgSQL            |pgjdbc (+ -ng Notice)|pgjdbc-ng Exc |PL/Java
-----------------|--|--------------------|---------------------|--------------|-----------------
+----------------|---|--------------------|---------------------|--------------|-----------------
 elevel          |S |                    |getSeverity          |              |getErrorLevel
 sqlstate        |C |RETURNED_SQLSTATE   |getSQLState  getCode |getSQLState   |getSqlState
 message         |M |MESSAGE_TEXT        |getMessage           |getMessage    |getMessage
