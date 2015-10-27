@@ -415,6 +415,7 @@ only the additional `String` passed to its constructor.
 
 [gpl]: http://docs.oracle.com/javase/7/docs/api/index.html?java/sql/Driver.html#getParentLogger()
 [nex]: http://impossibl.github.io/pgjdbc-ng/apidocs/0.6/index.html?com/impossibl/postgres/system/NoticeException.html
+[erut]: http://impossibl.github.io/pgjdbc-ng/apidocs/0.6/index.html?com/impossibl/postgres/jdbc/ErrorUtils.html
 
 ## What would a nice API look like?
 
