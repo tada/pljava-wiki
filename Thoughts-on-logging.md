@@ -528,6 +528,7 @@ thing) don't have any need to change.
 [gmsg]:  http://docs.oracle.com/javase/7/docs/api/index.html?java/util/logging/LogRecord.html#getMessage()
 [logrec]: http://docs.oracle.com/javase/7/docs/api/index.html?java/util/logging/LogRecord.html
 [lgr]: http://docs.oracle.com/javase/7/docs/api/index.html?java/util/logging/Logger.html
+[logr]: http://docs.oracle.com/javase/7/docs/api/index.html?java/util/logging/Logger.html#log(java.util.logging.LogRecord)
 
 ### Using familiar level names
 
