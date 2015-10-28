@@ -29,7 +29,7 @@ in the well-known quality and helpfulness of PostgreSQL messages.
 
 [stygd]: http://www.postgresql.org/docs/current/static/error-style-guide.html
 
-Part of the excellence of PostgreSQL's messages can be found in their rich
+Part of the excellence of PostgreSQL's messages can be traced to their rich
 structure. A message is not a blob of text with whatever details seemed
 useful while writing the code. It is a structured record with information
 serving several specific purposes and at several distinct levels of detail:
@@ -453,7 +453,7 @@ different.)
 ### An interface for exceptions that carry `LogRecord`s
 
 To allow moving forward with the [categorized exceptions][catex] in
-JDBC 4.0, this has to be an interface rather than a common parent class,
+JDBC 4.0, there needs to be an interface rather than a common parent class,
 and simply has a setter and getter for attaching a `LogRecord` to the
 exception. These would ordinarily not be used directly, but rather through
 methods of `LogRecord`.
@@ -463,7 +463,7 @@ methods of `LogRecord`.
 PL/Java would supply its special concrete implementation that wraps a
 native error-data block; a front-end JDBC would supply one (or two) that
 are initialized from the on-the-wire protocol. In all cases, there would be
-a concrete implementation that can be filled in from scratch.
+a plain pure-Java one that can be filled in from scratch.
 
 ### An `ereport`-like API for creating a `LogRecord` from scratch
 
