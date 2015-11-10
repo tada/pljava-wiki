@@ -1,5 +1,15 @@
 # Thoughts on logging
 
+---
+**Update:** This turns out to be more timely than I realized—PL/Pythonu is also [developing a patch][plpu] (starting last month) to the same end.
+
+[plpu]: http://postgresql.nabble.com/proposal-PL-Pythonu-function-ereport-td5869255.html
+
+On their client side, psycopg2 already exposes a [documented, supported PostgreSQL-specific Diagnostics object][pydiag].
+
+[pydiag]: http://initd.org/psycopg/docs/extensions.html#psycopg2.extensions.Diagnostics
+
+---
 _Note: this page does not describe how PL/Java currently works, except in
 the "Background" part. It is a proposal for further development._
 
