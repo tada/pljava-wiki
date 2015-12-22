@@ -1,8 +1,17 @@
-#Triggers#
-The method signature of a trigger is predefined. A trigger method must always return void and have a org.postgresql.pljava.TriggerData parameter. No more, no less. The TriggerData interface provides access to two java.sql.ResultSet instances; one representing the old row and one representing the new. The old row is read-only and the new row is updateable.
+# Triggers
 
-The ResultSets are only available for triggers that are fired ON EACH ROW. Delete triggers have no new row, and insert triggers have no old row. Only update triggers have both.
-In addition to the sets, several boolean methods exists to gain more information about the trigger.
+The method signature of a trigger is predefined. A trigger method must always
+return void and have a org.postgresql.pljava.TriggerData parameter. No more, no
+less. The TriggerData interface provides access to two java.sql.ResultSet
+instances; one representing the old row and one representing the new. The old
+row is read-only and the new row is updateable.
+
+The ResultSets are only available for triggers that are fired ON EACH ROW.
+Delete triggers have no new row, and insert triggers have no old row. Only
+update triggers have both.
+
+In addition to the sets, several boolean methods exists to gain more
+information about the trigger.
 ```sql
 CREATE TABLE mdt (
   id int4,
@@ -20,7 +29,7 @@ CREATE TRIGGER mdt_moddatetime
   EXECUTE PROCEDURE moddatetime (moddate);
 ```
 And here is the corresponding Java code:
-Methods in the <tt>org.postgresql.pljava.example.Triggers</tt> class
+
 ```java
 /**
  * Update a modification time when the row is updated.

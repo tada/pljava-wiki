@@ -1,6 +1,7 @@
-[[Building PL/Java]]<br>
-[[Configuring the PostgreSQL server]]<br>
-[[Installing on Linux (or other *nix)]]<br>
-[[Windows Installation]]<br>
-[[Running the PL/Java sample tests]]<br>
-[[Complete uninstall]]<br>
+# Installing PL/Java
+
+For the most current information on installing PL/Java,
+see the [installation guide][igd] on the [project information site][phs].
+
+[phs]: https://tada.github.io/pljava/
+[igd]: https://tada.github.io/pljava/install/install.html

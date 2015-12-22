@@ -1,3 +1,13 @@
-PostgreSQL save-points are exposed using the standard _setSavepoint()_ and _releaseSavepoint()_ methods on the _java.sql.Connection_ interface. Two restrictions apply:
-* A save-point must be rolled back or released in the function where it was set.
-* A save-point must not outlive the function where it was set.
+# Savepoints
+
+PostgreSQL savepoints are exposed using the standard `setSavepoint()` and
+`releaseSavepoint()` methods on the `java.sql.Connection` interface. Two
+restrictions apply:
+
+* A savepoint must be rolled back or released in the function where it was set.
+* A savepoint must not outlive the function where it was set.
+
+"Function" here refers to the PL/Java function that is called from SQL.
+The restrictions do not prevent the Java code from being organized into
+several methods, but the savepoint cannot survive the eventual return
+from Java to the SQL caller.

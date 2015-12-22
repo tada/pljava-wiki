@@ -1,5 +1,8 @@
-##Scalar types##
-Scalar types are mapped in a straight forward way. Here's a table of the current mappings (will be updated as more mappings are implemented).
+## Scalar types
+
+Scalar types are mapped in a straight forward way. Here's a table of the
+current mappings (will be updated as more mappings are implemented).
+
 <table>
 <tr><th>PostgreSQL</th><th>Java</th></tr>
 <tr><td>bool</td><td>boolean</td></tr>
@@ -21,11 +24,26 @@ Scalar types are mapped in a straight forward way. Here's a table of the current
 <tr><td>timestamptz</td><td>java.sql.Timestamp</td></tr>
 </table>
 
-##Array scalar types##
-All scalar types can be represented as an array. Although PostgreSQL will allow that you declare multi dimensional arrays with fixed sizes, PL/Java will still treat all arrays as having one dimension (with the exception of the bytea[] which maps to byte[][]). The reason for this is that the information about dimensions and sizes is not stored anywhere and not enforced in any way. You can read more about this in the [PostgreSQL Documentation](http://www.postgresql.org/docs/8.4/static/arrays.html).
-However, the current implementation does not enforce the array size limits — the behavior is the same as for arrays of unspecified length.
+## Array scalar types
 
-Actually, the current implementation does not enforce the declared number of dimensions either. Arrays of a particular element type are all considered to be of the same type, regardless of size or number of dimensions. So, declaring number of dimensions or sizes in CREATE TABLE is simply documentation, it does not affect run-time behavior.}}
+All scalar types can be represented as an array. Although PostgreSQL will allow
+that you declare multi dimensional arrays with fixed sizes, PL/Java will still
+treat all arrays as having one dimension (with the exception of the bytea[]
+which maps to byte[][]). The reason for this is that the information about
+dimensions and sizes is not stored anywhere and not enforced in any way. You
+can read more about this in the [PostgreSQL Documentation][arys].
+
+[arys]: http://www.postgresql.org/docs/8.4/static/arrays.html
+
+However, the current implementation does not enforce the array size limits —
+the behavior is the same as for arrays of unspecified length.
+
+Actually, the current implementation does not enforce the declared number of
+dimensions either. Arrays of a particular element type are all considered to be
+of the same type, regardless of size or number of dimensions. So, declaring
+number of dimensions or sizes in CREATE TABLE is simply documentation, it does
+not affect run-time behavior.
+
 <table>
 <tr><th>PostgreSQL</th><th>Java</th></tr>
 <tr><td>bool[]</td><td>boolean[]</td></tr>
@@ -47,10 +65,13 @@ Actually, the current implementation does not enforce the declared number of dim
 <tr><td>timestamptz[]</td><td>java.sql.Timestamp[]</td></tr>
 </table>
 
-##Domain types##
-A domain type will be mapped in accordance with the type that it extends unless you have installed a specific mapping to override that behavior.
+## Domain types
 
-##Pseudo types##
+A domain type will be mapped in accordance with the type that it extends unless
+you have installed a specific mapping to override that behavior.
+
+## Pseudo types
+
 <table>
 <tr><th>PostgreSQL</th><th>Java</th></tr>
 <tr><td>"any"</td><td>java.lang.Object</td></tr>
@@ -61,8 +82,11 @@ A domain type will be mapped in accordance with the type that it extends unless 
 <tr><td>trigger</td><td>org.postgresql.pljava.TriggerData (see [[Triggers]])</td></tr>
 </table>
 
-##NULL handling of primitives##
-The scalar types that map to Java primitives can not be passed as null values. To enable this, those types can have an alternative mapping. You enable this mapping by explicitly denoting it in the method reference.
+## NULL handling of primitives
+The scalar types that map to Java primitives can not be passed as null values.
+To enable this, those types can have an alternative mapping. You enable this
+mapping by explicitly denoting it in the method reference.
+
 ```sql
 CREATE FUNCTION trueIfEvenOrNull(integer)
   RETURNS bool
@@ -70,6 +94,7 @@ CREATE FUNCTION trueIfEvenOrNull(integer)
   LANGUAGE java;
 ```
 In java, you would have something like:
+
 ```java
 package foo.fee;
 
@@ -88,13 +113,26 @@ The following two statements should both yield true:
 SELECT trueIfEvenOrNull(NULL);
 SELECT trueIfEvenOrNull(4);
 ```
-In order to return null values from a Java method, you simply use the object type that corresponds to the primitive (i.e. you return java.lang.Integer instead of int). The PL/Java resolver mechanism will find the method regardless. Since Java cannot have different return types for methods with the same name, this does not introduce any ambiguities.
 
-Starting with PostgreSQL version 8.2 it will be possible to have NULL values in arrays. PL/Java will handle that the same way as with normal primitives, i.e. you can declare methods that use a java.lang.Integer[] parameter instead of an int[] parameter.
+In order to return null values from a Java method, you simply use the object
+type that corresponds to the primitive (i.e. you return java.lang.Integer
+instead of int). The PL/Java resolver mechanism will find the method
+regardless. Since Java cannot have different return types for methods with the
+same name, this does not introduce any ambiguities.
 
-##Composite types##
-A composite type will be passed as a read-only java.sql.ResultSet with exactly one row by default. The ResultSet will be positioned on its row so no call to next() should be made. The values of the composite type are retrieved using the standard getter methods of the ResultSet.
+Starting with PostgreSQL version 8.2 it will be possible to have NULL values in
+arrays. PL/Java will handle that the same way as with normal primitives, i.e.
+you can declare methods that use a java.lang.Integer[] parameter instead of an
+int[] parameter.
+
+## Composite types
+
+A composite type will be passed as a read-only java.sql.ResultSet with exactly
+one row by default. The ResultSet will be positioned on its row so no call to
+next() should be made. The values of the composite type are retrieved using the
+standard getter methods of the ResultSet.
 Example:
+
 ```sql
 CREATE TYPE compositeTest
   AS(base integer, incbase integer, ctime timestamptz);
@@ -106,6 +144,7 @@ CREATE FUNCTION useCompositeTest(compositeTest)
 ```
 In class Fum we add the static following static method
 The foo.fee.Fum.useCompositeTest method:
+
 ```java
 public static String useCompositeTest(ResultSet compositeTest)
 throws SQLException
@@ -119,5 +158,8 @@ throws SQLException
 }
 ```
 
-##Default mapping##
-Types that have no mapping are currently mapped to java.lang.String. The standard PostgreSQL textin/textout routines registered for respective type will be used when the values are converted.
+## Default mapping
+
+Types that have no mapping are currently mapped to java.lang.String. The
+standard PostgreSQL textin/textout routines registered for respective type will
+be used when the values are converted.

@@ -1,11 +1,21 @@
-The [install_jar](SQL Functions#wiki-install_jar), [replace_jar](SQL Functions#wiki-replace_jar), and [remove_jar](SQL Functions#wiki-remove_jar) can act on a _Deployment Descriptor_ allowing SQL commands to be executed after the jar has been installed or prior to removal.
+# SQLJ deployment descriptors
 
-The descriptor is added as a normal text file to your jar file. In the Manifest of the jar there must be an entry that appoints the file as the SQLJ deployment descriptor.
+The [install_jar](SQL Functions#wiki-install_jar),
+[replace_jar](SQL Functions#wiki-replace_jar), and
+[remove_jar](SQL Functions#wiki-remove_jar)
+can act on a _deployment descriptor_ allowing SQL commands to be executed
+after the jar has been installed or prior to removal.
+
+The descriptor is added as a normal text file to your jar file. In the Manifest
+of the jar there must be an entry that appoints the file as the SQLJ deployment
+descriptor.
+
 ```yaml
 Name: deployment/examples.ddr
 SQLJDeploymentDescriptor: TRUE
 ```
 The format of the deployment descriptor is stipulated by ISO/IEC 9075-13:2003.
+
 ```bnf
 <descriptor file> ::=
   SQLActions <left bracket> <rightbracket> <equal sign>
@@ -36,7 +46,10 @@ The format of the deployment descriptor is stipulated by ISO/IEC 9075-13:2003.
 <SQL token> ::= ! an SQL lexical unit specified by the term "<token>"
                   in Sub clause 5.2, "<token> and <separator>", in ISO/IEC 9075-2.
 ```
-If implementor blocks are used, PL/Java will consider only those with implementor name PostgreSQL (case insensitive). Here is a sample deployment descriptor:
+If implementor blocks are used, PL/Java will consider only those with
+implementor name PostgreSQL (case insensitive) by default. Here is a sample
+deployment descriptor:
+
 ```java
 SQLActions[] = {
   "BEGIN INSTALL
@@ -50,3 +63,11 @@ SQLActions[] = {
   END REMOVE"
 }
 ```
+## Configurable implementor-block recognition
+
+Although, by default, only the implementor name PostgreSQL is recognized,
+the implementor name(s) to be recognized can be set as a list in the
+variable `pljava.implementors`. It is consulted after every command while
+executing a deployment descriptor, which gives code in the descriptor
+a rudimentary form of conditional execution control, by changing which
+implementor blocks will be executed based on discovered conditions.
