@@ -60,8 +60,9 @@ as it is brought up to date.
 ## Resources
 
 *Note: at the moment, the Downloads available below are quite old.
-Please consider [[Building PL/Java]] using the source here on GitHub.*
+Please consider [Building PL/Java][bpj] using the source here on GitHub.*
 
+[bpj]: https://tada.github.io/pljava/build/build.html
 [Downloads](http://pgfoundry.org/frs/?group_id=1000038)  
 [Mailing List](http://lists.pgfoundry.org/mailman/listinfo/pljava-dev)    
 [Bug Tracking](/tada/pljava/issues)  
