@@ -59,7 +59,7 @@ public class ComplexScalar implements SQLData
    private double m_y;
    private String m_typeName;
 
-   @Function(type=IMMUTABLE, onNullInput=RETURNS_NULL)
+   @Function(effects=IMMUTABLE, onNullInput=RETURNS_NULL)
    public static ComplexScalar parse(String input, String typeName)
    throws SQLException
    {
@@ -106,7 +106,7 @@ public class ComplexScalar implements SQLData
       return m_typeName;
    }
 
-   @Function(type=IMMUTABLE, onNullInput=RETURNS_NULL)
+   @Function(effects=IMMUTABLE, onNullInput=RETURNS_NULL)
    @Override
    public void readSQL(SQLInput stream, String typeName) throws SQLException
    {
@@ -115,7 +115,7 @@ public class ComplexScalar implements SQLData
       m_typeName = typeName;
    }
 
-   @Function(type=IMMUTABLE, onNullInput=RETURNS_NULL)
+   @Function(effects=IMMUTABLE, onNullInput=RETURNS_NULL)
    @Override
    public void writeSQL(SQLOutput stream) throws SQLException
    {
@@ -123,7 +123,7 @@ public class ComplexScalar implements SQLData
       stream.writeDouble(m_y);
    }
 
-   @Function(type=IMMUTABLE, onNullInput=RETURNS_NULL)
+   @Function(effects=IMMUTABLE, onNullInput=RETURNS_NULL)
    @Override
    public String toString()
    {
