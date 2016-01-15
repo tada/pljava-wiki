@@ -2,7 +2,7 @@
 
 Only a PostgreSQL super user can install PL/Java. The PL/Java utility functions
 are installed as "security definer" so that they execute with the access
-permissions that where granted to the creator of the functions.
+permissions that were granted to the creator of the functions.
 
 ## Trusted vs. untrusted language
 
@@ -25,11 +25,12 @@ utility functions optionally execute commands found in a
 [[SQL deployment descriptor]]. Such commands are executed with the
 permissions of the caller. In
 other words, although the utility function is declared with "security definer",
-it switches back to the session user during execution of the deployment
-descriptor commands.
+it switches back to the identity of the invoker during execution of the
+deployment descriptor commands.
 
 ## Classpath manipulation
 
 The utility function [set_classpath](SQL Functions#wiki-set_classpath) requires
 that the caller of the function has been granted _CREATE_ permission on the
-affected schema.
+affected schema, unless it is the `public` schema, in which case the caller
+must be a superuser.
