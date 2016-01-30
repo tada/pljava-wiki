@@ -23,11 +23,15 @@ The corresponding Java class:
 package foo.fee;
 import java.util.Iterator;
 
+import org.postgresql.pljava.annotation.Function;
+import static org.postgresql.pljava.annotation.Function.Effects.IMMUTABLE;
+
 public class Bar
 {
-    public static Iterator getNames()
+    @Function(schema="javatest", effects=IMMUTABLE)
+    public static Iterator<String> getNames()
     {
-        ArrayList names = new ArrayList();
+        ArrayList<String> names = new ArrayList<>();
         names.add("Lisa");
         names.add("Bob");
         names.add("Bill");
@@ -92,6 +96,7 @@ public class Fum implements ResultSetProvider
   {
   	// Nothing needed in this example
   }
+  @Function(effects=IMMUTABLE, schema="javatest", type="complexTest")
   public static ResultSetProvider listComplexTests(int base, int increment)
   throws SQLException
   {
@@ -157,11 +162,13 @@ public class Users implements ResultSetHandle
     m_statement.close();
   }
 
+  @Function(schema="javatest", type="pg_user")
   public static ResultSetHandle listSupers()
   {
     return new Users("usesuper = true");
   }
 
+  @Function(schema="javatest", type="pg_user")
   public static ResultSetHandle listNonSupers()
   {
     return new Users("usesuper = false");
