@@ -47,7 +47,7 @@ import org.postgresql.pljava.annotation.Function;
 import org.postgresql.pljava.annotation.SQLType;
 import org.postgresql.pljava.annotation.BaseUDT;
 
-import static org.postgresql.pljava.annotation.Function.Type.IMMUTABLE;
+import static org.postgresql.pljava.annotation.Function.Effects.IMMUTABLE;
 import static
        org.postgresql.pljava.annotation.Function.OnNullInput.RETURNS_NULL;
 
