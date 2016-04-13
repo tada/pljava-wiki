@@ -35,8 +35,8 @@ and 9.4) with PL/Java 1.5.0 and Oracle Java 8 for use with [Docker][].
 
 [BigSQL][] provides native installers for Centos 6 and 7,
 Ubuntu 12.04 and 14.04, OS X 10.9+, Windows 7+, and Windows Server 2008
-and 2012. These distributions of PostgreSQL 9.5.2, 9.4.7, 9.3.12,
-and 9.2.16 [include PL/Java 1.5.0][bsqplj].
+and 2012. These distributions of PostgreSQL 9.5, 9.4, 9.3,
+and 9.2 [include PL/Java 1.5.0][bsqplj].
 
 [BigSQL]: http://www.bigsql.org/se/
 [bsqplj]: http://www.bigsql.org/se/docs/proclang/proclang.jsp#pljava
