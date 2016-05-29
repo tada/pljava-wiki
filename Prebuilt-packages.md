@@ -49,9 +49,9 @@ Please announce the availability of your package on
 [the pljava-dev mailing list][pljdv], along with the output of
 the third query below:
 
-**Note: as of 12 April 2016, the `pljava-dev` mailing list is not reliable,
-and the hosting service is looking into the trouble. To announce availability
-of a package, please [open an issue][ghissu].**
+**Note: as of mid-May 2016, the `pljava-dev` mailing list is working again,
+and should be used to announce packages. In case the mailing list does not
+seem to work, then please [open an issue][ghissu].**
 
 [ghissu]: https://github.com/tada/pljava/issues
 
