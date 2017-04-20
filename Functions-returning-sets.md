@@ -112,6 +112,12 @@ returns an instance of itself. The method
 will then be called repeatedly until it returns `false`. At that
 time, `close()` will be called.
 
+The `currentRow` parameter can be a convenience in some cases, and
+unnecessary in others. It will be passed as zero on the first call,
+and incremented by one on each subsequent call. If the `ResultSetProvider`
+is returning results from some source (like an `Iterator`) that remembers its
+own position, it can simply ignore `currentRow`.
+
 ### Using the ResultSetHandle interface
 
 This interface is similar to the `ResultSetProvider` interface in that it has a
