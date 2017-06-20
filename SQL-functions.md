@@ -127,3 +127,16 @@ class.
 <tr><th>Parameter</th><th>Description</th></tr>
 <tr><td>sql type</td><td>The name of the SQL type. The name can be qualified with a schema (namespace). If the schema is omitted, it will be resolved according to the current setting of the search_path.</td></tr>
 </table>
+
+<a id="jar_urls"></a>
+## Note on jar URLs
+
+The `install_jar` and `replace_jar` commands accept a URL (that must be
+reachable from the server) to a jar file. It is even possible, using the
+rules for jar URLs, to construct one that refers to a jar file within
+another jar file. For example:
+
+    jar:file:outer.jar!/inner.jar
+
+However, Java's caching of the "outer" jar may frustrate attempts to replace
+or reload a newer version within the same session.
