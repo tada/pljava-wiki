@@ -1,7 +1,7 @@
 # Prebuilt PL/Java distributions
 
 At present, the PL/Java project is reliant on downstream packagers to
-produce prebuilt, installable PL/Java jars for various platforms. The
+produce prebuilt, installable PL/Java packages for various platforms. The
 [official PL/Java releases][opljr] are offered in source form and take
 only a few minutes to build with Apache Maven as described in the
 [build instructions][bld].
