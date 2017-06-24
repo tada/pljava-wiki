@@ -1,5 +1,20 @@
 ![PL/Java](https://raw.github.com/tada/pljava/gh-pages/images/pljava_logo.jpg)
 
+## 2017/06 Breaking news: workaround crash with Stack Guard-hardened kernels
+
+As of late June 2017, Linux kernel vendors are shipping updates that harden
+the kernel against certain so-called stack-smash attacks. The hardened
+kernels change the mapping of memory just below the stack, and cause Java
+to crash with a `SIGBUS` error (as reported elsewhere, not only in PL/Java).
+If you experience this, add `-Xss2M` (or larger than 2M, if a larger stack
+size is needed by your application) to `pljava.vmoptions`.
+
+For more information, see [PL/Java issue #129][i129] and (for Red Hat
+subscribers) [this Red Hat solutions document][rhsol].
+
+[i129]: https://github.com/tada/pljava/issues/129
+[rhsol]: https://access.redhat.com/solutions/3091371
+
 # Welcome to PL/Java
 
 If you have comments or ideas regarding this wiki, please convey them on the
