@@ -56,7 +56,7 @@ public class Point implements SQLData {
 }
 ```
 
-Finally, you install the type mapping using the [[add_type_mapping]] command:
+Finally, you install the type mapping using the `add_type_mapping` command:
 
 ```sql
 SELECT sqlj.add_type_mapping('point', 'org.postgresql.pljava.example.Point');
