@@ -92,6 +92,7 @@ Feed for [changes to this wiki itself](tada/pljava/wiki.atom)
 [Bug Tracking](/tada/pljava/issues)  
 [Older bug tracker at PgFoundry](http://pgfoundry.org/tracker/?group_id=1000038)  
 [Even older bug tracker at GBorg](http://web.archive.org/web/20071104170322/http://gborg.postgresql.org:80/project/pljava/bugs/buglist.php)  
+
 [bpj]: https://tada.github.io/pljava/build/build.html
 [srcrel]: tada/pljava/releases
 [soq]: https://stackoverflow.com/questions/tagged/?tagnames=pljava&sort=newest
