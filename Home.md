@@ -74,16 +74,30 @@ as it is brought up to date.
 
 ## Resources
 
-*Note: at the moment, the Downloads available below are quite old.
-Please consider [Building PL/Java][bpj] using the source here on GitHub.*
+*Note: To be sure of running a current PL/Java, please check the
+[releases][srcrel] page to see what is current. You may check for any
+[[prebuilt packages]] available for your platform. If prebuilt packages are
+not available for your platform, or if they are behind the current version,
+please consider [Building PL/Java][bpj] using the source here on GitHub.*
 
-[bpj]: https://tada.github.io/pljava/build/build.html
-[Downloads](http://pgfoundry.org/frs/?group_id=1000038)  
-[Mailing List](http://lists.pgfoundry.org/mailman/listinfo/pljava-dev)    
+The "no longer supported" downloads linked below are quite old and of
+chiefly historical interest.
+
+[Source downloads][srcrel]  
+[[Prebuilt packages]]  
+[No longer supported downloads](http://pgfoundry.org/frs/?group_id=1000038)  
+[Mailing List](http://lists.pgfoundry.org/mailman/listinfo/pljava-dev)  
+Questions tagged `pljava` [on Stack Overflow][soq] (Atom [feed][sof])  
+Feed for [changes to this wiki itself](tada/pljava/wiki.atom)  
 [Bug Tracking](/tada/pljava/issues)  
-[Older bug tracker at PgFoundry](http://pgfoundry.org/tracker/?group_id=1000038)
+[Older bug tracker at PgFoundry](http://pgfoundry.org/tracker/?group_id=1000038)  
+[Even older bug tracker at GBorg](http://web.archive.org/web/20071104170322/http://gborg.postgresql.org:80/project/pljava/bugs/buglist.php)  
+[bpj]: https://tada.github.io/pljava/build/build.html
+[srcrel]: tada/pljava/releases
+[soq]: https://stackoverflow.com/questions/tagged/?tagnames=pljava&sort=newest
+[sof]: https://stackoverflow.com/feeds/tag?tagnames=pljava&sort=newest
 
 ## Technology
 
 [[Technology in Brief]]  
-[[The choice of JNI]]
+[[The choice of JNI]]  
