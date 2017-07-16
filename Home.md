@@ -88,13 +88,13 @@ chiefly historical interest.
 [No longer supported downloads](http://pgfoundry.org/frs/?group_id=1000038)  
 [Mailing List](http://lists.pgfoundry.org/mailman/listinfo/pljava-dev)  
 Questions tagged `pljava` [on Stack Overflow][soq] (Atom [feed][sof])  
-Feed for [changes to this wiki itself](tada/pljava/wiki.atom)  
+Feed for [changes to this wiki itself](/tada/pljava/wiki.atom)  
 [Bug Tracking](/tada/pljava/issues)  
 [Older bug tracker at PgFoundry](http://pgfoundry.org/tracker/?group_id=1000038)  
 [Even older bug tracker at GBorg](http://web.archive.org/web/20071104170322/http://gborg.postgresql.org:80/project/pljava/bugs/buglist.php)  
 
 [bpj]: https://tada.github.io/pljava/build/build.html
-[srcrel]: tada/pljava/releases
+[srcrel]: /tada/pljava/releases
 [soq]: https://stackoverflow.com/questions/tagged/?tagnames=pljava&sort=newest
 [sof]: https://stackoverflow.com/feeds/tag?tagnames=pljava&sort=newest
 
