@@ -59,7 +59,8 @@ CREATE TABLE catalog_as_xml AS
 SELECT schema_to_xml('pg_catalog', true, false, '') AS x;
 ```
 
-In PostgreSQL 11beta3, the resulting document has the following size:
+In PostgreSQL 11beta3, the resulting document has the following size (after
+PL/Java and the example code have been loaded):
 
 ```sql
 SELECT octet_length(xml_send(x)) AS uncompressed, pg_column_size(x) AS toasted
