@@ -121,7 +121,7 @@ options:
 `j9s`|OpenJ9, no `-Xquickstart`, sharing (Java runtime, PL/Java, Saxon)
 `j9qs`|OpenJ9, `-Xquickstart`, sharing (as above)
 
-iteration | `hs` | `hs-cds` | `hs-appcds` | `j9` | `j9q` | `j9s` | `j9qs`
+iteration | `pg` | `hs` | `hs-cds` | `hs-appcds` | `j9` | `j9q` | `j9s` | `j9qs`
 ----------|-----:|---------:|------------:|-----:|------:|------:|-------:
 1st |908.231|1969.658|1889.124|1544.612|3250.965|3095.733|2443.649|2644.991
 2nd |879.483|747.658|777.894|719.146|1229.200|1855.513|1073.335|1932.083
