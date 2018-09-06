@@ -67,7 +67,7 @@ FROM catalog_as_xml;
 ```
  uncompressed | toasted 
 -------------:|--------:
-     14049808 | 1130828
+14049808 | 1130828
 
 A test query will return the string value of every element whose string value
 is exactly six characters (a query that may be artificial and contrived, but
@@ -112,6 +112,7 @@ options:
 
  tag | description
 ----:|-------------
+`pg`|Baseline, PostgreSQL `XMLTABLE`
 `hs`|Hotspot, no sharing
 `hs-cds`|Hotspot, class data sharing (Java runtime classes only)
 `hs-appcds`|Hotspot, AppCDS (commercial feature), Java runtime, PL/Java, Saxon
