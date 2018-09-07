@@ -23,6 +23,8 @@ This wiki page is intended as a clearinghouse for tuning tips and performance
 measurements for various PL/Java workloads and the available Java runtimes,
 that can be updated more actively between releases of the formal documentation.
 
+[hstune]: http://tada.github.io/pljava/install/vmoptions.html
+
 ## Tip for quickly comparing runtime configurations
 
 Once the PL/Java extension is installed in a database, in any newly-created
@@ -132,7 +134,48 @@ iteration | `pg` | `hs` | `hs-cds` | `hs-appcds` | `j9` | `j9q` | `j9s` | `j9qs`
 8th |880.766|640.940|643.535|632.260|962.517|1660.867|952.857|1870.506
 16th|880.622|654.674|682.772|627.037|967.805|1656.651|943.923|1941.888
 
+### Discussion
+
+* The baseline native `XMLTABLE` implementation in PostgreSQL delivers
+    consistent times over successive runs. Java timings improve over successive
+    early runs, as the VM identifies and reoptimizes hot areas.
+* For all of the Java results, the first-iteration result includes the time
+    to launch the Java virtual machine. For Hotspot, this gives a time to first
+    result from 67% (best) to 108% (worst) longer than the native baseline.
+* All tested Hotspot configurations are outperforming the native implementation
+    as soon as the next iteration, and eventually by 22% to 28%.
+* For this workload, Hotspot seems to have a striking performance advantage
+    relative to OpenJ9. Possible explanations:
+    * Saxon is a mature and carefully-optimized library; are its optimizations
+        extremely specific to Hotspot?
+    * PL/Java makes heavy use of JNI; could this pattern be less well handled
+        in OpenJ9?
+* OpenJ9's `-Xquickstart` is a poor fit for this workload, as it suppresses
+    JIT optimization so drastically that performance improves very little on
+    successive runs.
+* The combination of `-Xquickstart` and `-Xshareclasses` for this workload is
+    especially disappointing, probably because the two features, when combined,
+    force the ahead-of-time compilation of all methods. That sounds promising,
+    but not if the AOT code significantly underperforms what the optimizing JIT
+    would generate.
+* Memory footprint was not compared. PL/Java's [documentation][hstune] already
+    has a section on plausible memory settings for Hotspot, but not for OpenJ9,
+    which has a good reputation for memory frugality. Exploration would be
+    worthwhile.
+* There could be other workloads in which the Hotspot and OpenJ9 relative
+    timings could be closer, or even reversed.
+* The procedure to set up class sharing for OpenJ9 is considerably simpler
+    than to set up `AppCDS` for Hotspot, enough to make OpenJ9 an attractive
+    choice for workloads where the performance is more comparable.
+
 ### Notes on methodology
+
+#### Platform
+
+Intel Xeon X5650 2.67 GHz, 6 cores (12 hyperthreads), 24 GB RAM, Linux.
+
+PostgreSQL installation, Java runtimes, database, and PL/Java and Saxon
+libraries and jars installed in an in-memory (`tmpfs`) filesystem.
 
 #### Connection strings used for each test configuration
 
@@ -167,7 +210,7 @@ by adding it to `pljava.classpath` instead, as explained below.)
 
 #### Setup for Hotspot
 
-* The existing Hotspot installation on disk was copied to the `/var/tmp` ramfs.
+* The existing Hotspot installation on disk was copied to the `tmpfs`.
 * That invalidates the paths in the supplied `classes.jsa` shared archive that
     was generated when Java was installed to its location on disk, so the
     `lib/amd64/server/classes.jsa` file was removed from the copy and
@@ -197,11 +240,11 @@ by adding it to `pljava.classpath` instead, as explained below.)
 
 #### Setup for OpenJ9
 
-* The OpenJDK with OpenJ9 download was unzipped in the `/var/tmp` ramfs.
+* The OpenJDK with OpenJ9 download was unzipped in the `/var/tmp` `tmpfs`.
 * Because PL/Java under OpenJ9 is able to share classes from the PL/Java
     application classpath (the one managed by `sqlj.set_classpath`) and not
     just the system classpath, there was no need to add the Saxon jar to
-    `pljava.classpath` as for Hotspot. It was simply loaded
+    `pljava.classpath` as there was for Hotspot. It was simply loaded
     with `sqlj.install_jar` under the name `saxon`, and put on the application
     classpath with `SELECT sqlj.set_classpath('public', 'ex:saxon');`.
 * Each set of runs with sharing (`j9s`, `j9qs`) was prepared by starting a fresh
