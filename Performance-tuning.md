@@ -204,7 +204,7 @@ examples jar (giving it the name `ex`), with `deploy => true` to create the
 function declarations, and also the `Saxon-HE-9.8.0-14.jar`, naming it `saxon`.
 
 The PL/Java application classpath (set with `sqlj.set_classpath` on the `public`
-schema, was `ex` during the Hotspot runs, and `ex:saxon` during the OpenJ9
+schema), was `ex` during the Hotspot runs, and `ex:saxon` during the OpenJ9
 runs. (For the Hotspot runs, the Saxon jar was placed on the system classpath
 by adding it to `pljava.classpath` instead, as explained below.)
 
@@ -277,6 +277,7 @@ unzip Saxon-HE-9.8.0-14.jar META-INF/MANIFEST.MF
 ed META-INF/MANIFEST.MF <<END-COMMANDS
 /^[[:space:]]/+1,$d
 wq
+END-COMMANDS
 zip -u Saxon-HE-9.8.0-14.jar META-INF/MANIFEST.MF
 ```
 
