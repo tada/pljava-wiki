@@ -122,6 +122,8 @@ options:
 `j9s`|OpenJ9, no `-Xquickstart`, sharing (Java runtime, PL/Java, Saxon)
 `j9qs`|OpenJ9, `-Xquickstart`, sharing (as above)
 
+`EXPLAIN ANALYZE` reported timings in milliseconds:
+
 iteration | `pg` | `hs` | `hs-cds` | `hs-appcds` | `j9` | `j9q` | `j9s` | `j9qs`
 ----------|-----:|-----:|---------:|------------:|-----:|------:|------:|-------:
 1st |908.231|1888.859|1837.186|1539.781|3250.965|3095.733|2443.649|2644.991
@@ -129,3 +131,112 @@ iteration | `pg` | `hs` | `hs-cds` | `hs-appcds` | `j9` | `j9q` | `j9s` | `j9qs`
 4th |881.302|664.422|688.487|673.037|1011.018|1708.208|987.191|1912.010
 8th |880.766|640.940|643.535|632.260|962.517|1660.867|952.857|1870.506
 16th|880.622|654.674|682.772|627.037|967.805|1656.651|943.923|1941.888
+
+### Notes on methodology
+
+#### Connection strings used for each test configuration
+
+_Note: the connection strings below for the Hotspot runs with `AppCDS` contain
+the option `-XX:+UnlockCommercialFeatures` because the runs were done on
+Oracle Java 8 where `AppCDS` is a commercial feature, and its use in production
+will need a license from Oracle. The same feature appears in OpenJDK with
+Hotspot starting in Java 10, where it is not a commercial feature, and does not
+require that `-XX:+UnlockCommercialFeatures` option; it is otherwise configured
+in the same way._
+
+```
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/nohome/jre/lib/amd64/server/libjvm.so -c pljava.vmoptions=-Djava.home=/var/tmp/nohome/jre\\\ -XX:+UseSerialGC\\\ -XX:+DisableAttachMechanism\\\ -Xshare:off -c pljava.classpath=/var/tmp/nohome/pg11/share/postgresql/pljava/pljava-1.5.1-SNAPSHOT.jar:/var/tmp/nohome/jre/lib/Saxon-HE-9.8.0-14.jar'"
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/nohome/jre/lib/amd64/server/libjvm.so -c pljava.vmoptions=-Djava.home=/var/tmp/nohome/jre\\\ -XX:+UseSerialGC\\\ -XX:+DisableAttachMechanism\\\ -Xshare:on -c pljava.classpath=/var/tmp/nohome/pg11/share/postgresql/pljava/pljava-1.5.1-SNAPSHOT.jar:/var/tmp/nohome/jre/lib/Saxon-HE-9.8.0-14.jar'"
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/nohome/jre/lib/amd64/server/libjvm.so -c pljava.vmoptions=-Djava.home=/var/tmp/nohome/jre\\\ -XX:+UseSerialGC\\\ -XX:+DisableAttachMechanism\\\ -Xshare:on\\\ -XX:+UnlockCommercialFeatures\\\ -XX:+UseAppCDS\\\ -XX:SharedArchiveFile=/var/tmp/nohome/pljava.jsa -c pljava.classpath=/var/tmp/nohome/pg11/share/postgresql/pljava/pljava-1.5.1-SNAPSHOT.jar:/var/tmp/nohome/jre/lib/Saxon-HE-9.8.0-14.jar'"
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/jdk8u162-b12_openj9-0.8.0/jre/lib/amd64/j9vm/libjvm.so'"
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/jdk8u162-b12_openj9-0.8.0/jre/lib/amd64/j9vm/libjvm.so -c pljava.vmoptions=-Xquickstart'"
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/jdk8u162-b12_openj9-0.8.0/jre/lib/amd64/j9vm/libjvm.so -c pljava.vmoptions=-Xshareclasses:cacheDir=/var/tmp/pljavaj9cache'"
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/jdk8u162-b12_openj9-0.8.0/jre/lib/amd64/j9vm/libjvm.so -c pljava.vmoptions=-Xshareclasses:cacheDir=/var/tmp/pljavaj9cache\\\ -Xquickstart'"
+```
+
+#### Jars loaded into PL/Java
+
+The PL/Java `sqlj.install_jar` function was used to install the PL/Java
+examples jar (giving it the name `ex`), with `deploy => true` to create the
+function declarations, and also the `Saxon-HE-9.8.0-14.jar`, naming it `saxon`.
+
+The PL/Java application classpath (set with `sqlj.set_classpath` on the `public`
+schema, was `ex` during the Hotspot runs, and `ex:saxon` during the OpenJ9
+runs. (For the Hotspot runs, the Saxon jar was placed on the system classpath
+by adding it to `pljava.classpath` instead, as explained below.)
+
+#### Setup for Hotspot
+
+* The existing Hotspot installation on disk was copied to the `/var/tmp` ramfs.
+* That invalidates the paths in the supplied `classes.jsa` shared archive that
+    was generated when Java was installed to its location on disk, so the
+    `lib/amd64/server/classes.jsa` file was removed from the copy and
+    regenerated with `java -Xshare:dump` to contain the correct paths. That
+    shared archive contains only classes of the Java runtime itself.
+* The shared archive for `AppCDS`, to include PL/Java implementation
+    classes and the Saxon library as well as the Java runtime's classes,
+    was generated in two steps:
+    1. A connection string with `-XX:DumpLoadedClassList=filename` was issued
+        and the test query was executed, to populate the class list with the
+        needed classes.
+    1. A new connection string with `-Xshare:dump` and `-XX:SharedClassListFile`
+        naming the classlist file generated in the first step was issued, and
+        then `SELECT sqlj.get_classpath('public');` to trigger PL/Java loading.
+        Java reads the class list and generates the shared archive, and the
+        backend exits.
+* Because Hotspot `AppCDS` will share only classes from the system classpath,
+    the `pljava.classpath` setting was altered to include
+    `Saxon-HE-9.8.0-14.jar` as well as the PL/Java jar.
+* Because PL/Java's security manager disallows jar loading from arbitrary
+    filesystem locations, the `Saxon-HE-9.8.0-14.jar` was placed in Java's
+    `jre/lib` directory and the `pljava.classpath` referred to it there.
+* `AppCDS` will not share classes contained in a signed jar, and the distributed
+    `Saxon-HE-9.8.0-14.jar` is signed, so the copy placed in `jre/lib` was
+    "de-signed" by deleting its `TE-050AC.SF` entry and all `Name:`/`Digest:`
+    sections from its `MANIFEST.MF` entry.
+
+#### Setup for OpenJ9
+
+* The OpenJDK with OpenJ9 download was unzipped in the `/var/tmp` ramfs.
+* Because PL/Java under OpenJ9 is able to share classes from the PL/Java
+    application classpath (the one managed by `sqlj.set_classpath`) and not
+    just the system classpath, there was no need to add the Saxon jar to
+    `pljava.classpath` as for Hotspot. It was simply loaded
+    with `sqlj.install_jar` under the name `saxon`, and put on the application
+    classpath with `SELECT sqlj.set_classpath('public', 'ex:saxon');`.
+* Each set of runs with sharing (`j9s`, `j9qs`) was prepared by starting a fresh
+    session with the same connection string to be used for that set, and the
+    `shareDir` named in that connection string empty. Sixteen runs were made
+    without timing, to populate the shared cache.
+* Then the same connection string was used again to start a fresh session,
+    and the full set of 16 runs repeated and timed.
+
+#### Connection strings generating `AppCDS` shared archive
+
+_See the earlier note concerning the `-XX:+UnlockCommercialFeatures` option,
+which is needed (with legal implications) to use the `AppCDS` feature in
+Oracle Java. The same feature appears in OpenJDK as of Java 10, without the
+need for that option or a commercial license._
+
+```
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/nohome/jre/lib/amd64/server/libjvm.so -c pljava.vmoptions=-Djava.home=/var/tmp/nohome/jre\\\ -XX:+UseSerialGC\\\ -XX:+DisableAttachMechanism\\\ -Xshare:off\\\ -XX:DumpLoadedClassList=/var/tmp/nohome/pljava.classlist\\\ -XX:+UnlockCommercialFeatures\\\ -XX:+UseAppCDS -c pljava.classpath=/var/tmp/nohome/pg11/share/postgresql/pljava/pljava-1.5.1-SNAPSHOT.jar:/var/tmp/nohome/jre/lib/Saxon-HE-9.8.0-14.jar'"
+\c "dbname=postgres options='-c pljava.libjvm_location=/var/tmp/nohome/jre/lib/amd64/server/libjvm.so -c pljava.vmoptions=-Djava.home=/var/tmp/nohome/jre\\\ -XX:+UseSerialGC\\\ -XX:+DisableAttachMechanism\\\ -Xshare:dump\\\ -XX:SharedClassListFile=/var/tmp/nohome/pljava.classlist\\\ -XX:+UnlockCommercialFeatures\\\ -XX:+UseAppCDS\\\ -XX:SharedArchiveFile=/var/tmp/nohome/pljava.jsa -c pljava.classpath=/var/tmp/nohome/pg11/share/postgresql/pljava/pljava-1.5.1-SNAPSHOT.jar:/var/tmp/nohome/jre/lib/Saxon-HE-9.8.0-14.jar'"
+```
+
+#### "De-signing" the Saxon jar
+
+Hotspot's `AppCDS` will not share classes from a signed jar, so the signatures
+were removed from the Saxon jar with this procedure:
+
+```sh
+zip -d Saxon-HE-9.8.0-14.jar META-INF/TE-050AC.SF
+unzip Saxon-HE-9.8.0-14.jar META-INF/MANIFEST.MF
+ed META-INF/MANIFEST.MF <<END-COMMANDS
+/^[[:space:]]/+1,$d
+wq
+zip -u Saxon-HE-9.8.0-14.jar META-INF/MANIFEST.MF
+```
+
+Stripping the signatures does not impair the operation of the open-source
+Saxon-HE. It is conceivable that the commercial Saxon-PE or Saxon-EE would
+object to such treatment.
