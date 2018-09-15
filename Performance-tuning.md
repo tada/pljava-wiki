@@ -99,7 +99,7 @@ library:
 
 ```sql
 EXPLAIN ANALYZE SELECT
-  "xmltable".*
+  xmltable.*
 FROM
   catalog_as_xml,
   LATERAL (SELECT x AS ".") AS p,
