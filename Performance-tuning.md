@@ -168,6 +168,50 @@ iteration | `pg` | `hs` | `hs-cds` | `hs-appcds` | `j9` | `j9q` | `j9s` | `j9qs`
     than to set up `AppCDS` for Hotspot, enough to make OpenJ9 an attractive
     choice for workloads where the performance is more comparable.
 
+### Variation by processor count
+
+The results above were obtained with 6 available processor cores (12
+hyperthreads). Here, the best Hotspot (`h-`) and OpenJ9 (`j-`) configurations
+from above (`hs-appcds` and `j9s`, respectively) are repeated for different
+numbers of cores and threads available to the backend process.
+
+iteration | `h-4c8t` | `h-4c4t` | `h-2c4t` | `h-2c2t` | `h-1c2t` | `h-1c1t`
+----------|---------:|---------:|---------:|---------:|--------:|---------:
+1st |1798.020|2140.068|1871.740|2760.872|2564.169|4306.058
+2nd |780.182|827.379|825.943|1054.749|1064.300|1704.112
+4th |661.740|672.415|662.259|786.407|734.421|756.054
+8th |619.978|653.686|641.784|659.112|678.855|722.792
+16th|619.824|647.092|664.287|671.862|639.365|651.502
+
+iteration | `j-4c8t` | `j-4c4t` | `j-2c4t` | `j-2c2t` | `j-1c2t` | `j-1c1t`
+----------|---------:|---------:|---------:|---------:|--------:|---------:
+1st |2413.365|2419.176|2411.006|2470.092|2457.868|3673.986
+2nd |1108.991|1093.504|1050.731|1142.424|1072.635|2599.973
+4th |969.465|1003.736|988.883|983.431|941.495|1032.896
+8th |967.447|900.644|963.011|926.342|920.390|1032.316
+16th|1113.963|932.503|1496.240|925.137|939.179|990.072
+
+#### Discussion
+
+Hotspot's initial startup uses parallelism to good advantage, so the startup
+time suffers when cores are limited, and especially when limited to one hardware
+thread. Interestingly, comparing sets with the same number of threads, in one
+case independent on an equal number of cores, and in the other case hyperthreads
+on half as many cores, the data above seem to favor the hyperthreaded case.
+More runs might reveal whether that apparent pattern persists.
+
+Even with only one hardware thread available, Hotspot can still produce code
+that outperforms the native `libxml2` no later than the fourth iteration.
+
+OpenJ9, while not achieving the ultimate speeds of Hotspot on this workload,
+shows a first-run time that suffers less when limited to few CPUs. However,
+that advantage diminishes when taking the times of the first two runs into
+account.
+
+Not shown in these tables, but as expected, the baseline PostgreSQL native
+`XMLTABLE` posted timings of 893 ms first run, 877 ms second run, consistently
+with the earlier values, even when limited to one core, one thread.
+
 ### Notes on methodology
 
 #### Platform
@@ -284,3 +328,32 @@ zip -u Saxon-HE-9.8.0-14.jar META-INF/MANIFEST.MF
 Stripping the signatures does not impair the operation of the open-source
 Saxon-HE. It is conceivable that the commercial Saxon-PE or Saxon-EE would
 object to such treatment.
+
+#### Setup for processor-count variation
+
+Several Linux control groups were created as follows:
+
+```sh
+mkdir /sys/fs/cgroup/cpuset/{1c1t,1c2t,2c2t,2c4t,4c4t,4c8t}
+for i in /sys/fs/cgroup/cpuset/?c?t
+do
+  echo 0 >$i/cpuset.mems
+done
+echo 0       >/sys/fs/cgroup/cpuset/1c1t/cpuset.cpus
+echo 0,1     >/sys/fs/cgroup/cpuset/1c2t/cpuset.cpus
+echo 0,2     >/sys/fs/cgroup/cpuset/2c2t/cpuset.cpus
+echo 0-3     >/sys/fs/cgroup/cpuset/2c4t/cpuset.cpus
+echo 0,2,4,6 >/sys/fs/cgroup/cpuset/4c4t/cpuset.cpus
+echo 0-7     >/sys/fs/cgroup/cpuset/4c8t/cpuset.cpus
+```
+
+After each new backend was established with the appropriate `\c` line,
+its process ID was obtained with `SELECT pg_backend_pid();` and echoed
+into `cgroup.procs` in the appropriate `cpuset` subdirectory.
+
+The OpenJ9 class share was initially populated with one set of 16 runs
+before any timing was done. Timings were then done in the order shown, from
+`4c8t` to `1c1t`, and the `-Xshareclasses` option did not have `readonly`
+added for the timed sets. Because OpenJ9 can continue adding JIT hints to
+a class share during operation, it is possible that the later sets benefit
+from JIT hints added during the earlier ones.
