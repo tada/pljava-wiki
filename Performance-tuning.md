@@ -94,8 +94,11 @@ FROM
 
 It will be compared to the equivalent query expressed in XQuery 1.0
 and the `"xmltable"` function defined in the not-built-by-default
-`org.postgresql.pljava.example.saxon.S9` example, relying on the Saxon-HE
-library:
+[`org.postgresql.pljava.example.saxon.S9`][s9] example, relying on the
+[Saxon-HE][] library:
+
+[s9]: http://tada.github.io/pljava/examples/saxon.html
+[Saxon-HE]: http://www.saxonica.com/products/products.xml
 
 ```sql
 EXPLAIN ANALYZE SELECT
