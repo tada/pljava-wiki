@@ -18,6 +18,17 @@ any package listed here.
 
 ## Known prebuilt packages available
 
+### Debian/Ubuntu packages [on apt.postgresql.org][aptpgo]
+
+    {1.5.2,"11.1 (Debian 11.1-1.pgdg+1)",11.0.1,Linux,amd64}`
+
+PL/Java 1.5.2 packages available for PostgreSQL 11 back to 9.3 for Debian unstable/buster/stretch and Ubuntu cosmic/bionic/xenial, for amd64/i386/ppc64el. Dbgsym packages available. Includes `pljava-examples` jar with the [optional Saxon examples][osaxone] already built (download Saxon-HE 9.8.0.14 jar separately to use them).
+
+[aptpgo]: http://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-pljava/
+[osaxone]: http://tada.github.io/pljava/examples/saxon.html
+
+*Added 14 November 2018*
+
 ### Docker images
 
 **Martin Bednar** has prepared [images][dockimg] of 64-bit PostgreSQL (9.5
