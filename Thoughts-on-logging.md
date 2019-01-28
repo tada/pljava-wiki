@@ -332,9 +332,9 @@ Because there are only seven predefined [`java.util.logging.Level`][jlvl]s and
 some of their names are different from PostgreSQL's, PL/Java maps them as
 follows:
 
- | |FINEST|FINER|FINE| | |INFO| |WARNING|SEVERE| | 
----|---|---|---|---|---|---|---|---|---|---|---|---
-DEBUG5|DEBUG4|DEBUG3|DEBUG2|DEBUG1|LOG|COMMERROR|INFO|NOTICE|WARNING|ERROR|FATAL|PANIC
+| | |FINEST|FINER|FINE| | |INFO| |WARNING|SEVERE| | |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|DEBUG5|DEBUG4|DEBUG3|DEBUG2|DEBUG1|LOG|COMMERROR|INFO|NOTICE|WARNING|ERROR|FATAL|PANIC|
 
 The Java level `CONFIG` isn't explicitly mapped, and anything that isn't
 explicit will map to the PostgreSQL level `LOG`. For completeness, I've
@@ -563,30 +563,30 @@ learns the names of new levels so they "just work". I propose defining the
 PostgreSQL levels whose names do not already match [`Level`][jlvl] names,
 with a possible relationship like this:
 
-PostgreSQL|Java
---------:|-------
-         |ALL
-         |FINEST?
-DEBUG5   |
-         |FINEST?
-DEBUG4   |
-DEBUG3   |
-         |FINER
-DEBUG2   |
-         |FINE
-DEBUG1   |
-         |CONFIG
-LOG      |
-COMMERROR|
-INFO     |INFO
-NOTICE   |
-WARNING  |WARNING
-         |SEVERE?
-ERROR    |
-         |SEVERE?
-FATAL    |
-PANIC    |
-         |OFF
+|PostgreSQL|Java|
+|--------:|-------|
+|         |ALL|
+|         |FINEST?|
+|DEBUG5   ||
+|         |FINEST?|
+|DEBUG4   ||
+|DEBUG3   ||
+|         |FINER|
+|DEBUG2   ||
+|         |FINE|
+|DEBUG1   ||
+|         |CONFIG|
+|LOG      ||
+|COMMERROR||
+|INFO     |INFO|
+|NOTICE   ||
+|WARNING  |WARNING|
+|         |SEVERE?|
+|ERROR    ||
+|         |SEVERE?|
+|FATAL    ||
+|PANIC    ||
+|         |OFF|
 
 As you can see, I'm still considering arguments about where `FINEST` and
 `SEVERE` should go.
