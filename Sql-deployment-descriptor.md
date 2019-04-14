@@ -1,8 +1,8 @@
 # SQLJ deployment descriptors
 
-The [install_jar](SQL Functions#wiki-install_jar),
-[replace_jar](SQL Functions#wiki-replace_jar), and
-[remove_jar](SQL Functions#wiki-remove_jar)
+The [install_jar](SQL-functions#install_jar),
+[replace_jar](SQL-functions#replace_jar), and
+[remove_jar](SQL-functions#remove_jar) functions
 can act on a _deployment descriptor_ allowing SQL commands to be executed
 after the jar has been installed or prior to removal.
 
@@ -14,6 +14,9 @@ descriptor.
 Name: deployment/examples.ddr
 SQLJDeploymentDescriptor: TRUE
 ```
+
+Such a file can be written by hand according to the format below, but the usual method is to add specific Java annotations in the source code, as described under [function mapping - SQL generation](Function-mapping#sql-generation). The Java compiler then generates the deployment descriptor file at the same time it compiles the Java sources, and the compiled classes and `.ddr` file can all be placed in the jar together.
+
 The format of the deployment descriptor is stipulated by ISO/IEC 9075-13:2003.
 
 ```bnf
